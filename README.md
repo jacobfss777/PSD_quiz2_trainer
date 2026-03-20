@@ -72,3 +72,8 @@ Copy/paste it into your browser.
   - Edit `questions.json`
   - Keep the `correct` field as a **0-based index** into the `options` array
 - The UI loads questions from `questions.json` and shuffles them each session.
+
+## Support / Donation
+![Donation QR Code](donation_qr.jpg)
+
+your donation plays a part for my wingstop
