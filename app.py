@@ -149,36 +149,48 @@ def _render_dashboard():
     )
     st.divider()
 
-    topic_keys = list(data["topics"].keys())
-    col1, col2 = st.columns(2)
-    columns = [col1, col2, col1, col2]
+    main_col, qr_col = st.columns([3, 2])
 
-    for i, key in enumerate(topic_keys):
-        t = data["topics"][key]
-        count = len(t["questions"])
-        label = f"{t['icon']}  {t['name']}"
-        sub = f"{count} question{'s' if count != 1 else ''}" if count else "Coming soon"
-        with columns[i]:
-            st.button(
-                f"{label}\n{sub}",
-                key=f"dash_{key}",
-                on_click=_start_quiz,
-                args=(key,),
-                use_container_width=True,
-                disabled=count == 0,
-            )
+    with main_col:
+        topic_keys = list(data["topics"].keys())
+        col1, col2 = st.columns(2)
+        columns = [col1, col2, col1, col2]
 
-    st.divider()
+        for i, key in enumerate(topic_keys):
+            t = data["topics"][key]
+            count = len(t["questions"])
+            label = f"{t['icon']}  {t['name']}"
+            sub = f"{count} question{'s' if count != 1 else ''}" if count else "Coming soon"
+            with columns[i]:
+                st.button(
+                    f"{label}\n{sub}",
+                    key=f"dash_{key}",
+                    on_click=_start_quiz,
+                    args=(key,),
+                    use_container_width=True,
+                    disabled=count == 0,
+                )
 
-    total_q = sum(len(t["questions"]) for t in data["topics"].values())
-    st.button(
-        f"[*] Full Mock Exam\n{total_q} questions across all topics",
-        key="dash_full",
-        on_click=_start_quiz,
-        args=("full_mock",),
-        use_container_width=True,
-        disabled=total_q == 0,
-    )
+        st.divider()
+
+        total_q = sum(len(t["questions"]) for t in data["topics"].values())
+        st.button(
+            f"[*] Full Mock Exam\n{total_q} questions across all topics",
+            key="dash_full",
+            on_click=_start_quiz,
+            args=("full_mock",),
+            use_container_width=True,
+            disabled=total_q == 0,
+        )
+
+    with qr_col:
+        qr_path = Path(__file__).parent / "donation_qr.jpg"
+        st.image(str(qr_path), use_container_width=True)
+        st.markdown(
+            "<p style='text-align:center; font-size:0.9rem; opacity:0.75;'>"
+            "your donation plays a part for my wingstop</p>",
+            unsafe_allow_html=True,
+        )
 
 
 # ---------------------------------------------------------------------------
